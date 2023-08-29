@@ -1,5 +1,4 @@
 #create top hashtag timelines and compares them between two factions (e.g. group 1 & 2)
-#unlist hashtags
 
 ##group1
 group1_hashtags_grouped <- list()
