@@ -11,14 +11,14 @@ csv <- data.frame(csv)
 
 file = csv$body
 
-#export each row in csv
+#export each row in csv | use pre-written python-script imported in R for convenience
 source_python("~/Dropbox/tm/rowwriter.py")
-
 rowwriter(file, "DEFINE OUTPUT FOLDER")
+
 #check state of output
 x <- list.files(path = "ADD PATH OUTPUT FOLDER")
 
-#run mallet
+#run mallet topic modeling instance
 input <- mallet.read.dir("ADD PATH OUTPUT FOLDER")
 tm <- mallet.import(input$id, input$text, "ADD STOPWORDS FILE")
 
@@ -26,12 +26,13 @@ tm <- mallet.import(input$id, input$text, "ADD STOPWORDS FILE")
 #define number of topics
 topic.model <- MalletLDA(num.topics=10)
 
+#initialize corpus
 topic.model$loadDocuments(tm)
 
 #tibble(word.freqs) %>% arrange(desc(tibble(word.freqs)$term.freq))
 
-## Optimize hyperparameters every 20 iterations, after 50 burn-in iterations
-topic.model$setAlphaOptimization(10, 50)
+## Optimize hyperparameters every 15 iterations, after 50 burn-in iterations, to get more 'fine-grained' results
+topic.model$setAlphaOptimization(15, 50)
 
 #train model set number of iterations
 topic.model$train(1000)
