@@ -1,3 +1,6 @@
+#Simple topic modeling script to go over a corpus of single-file text-files and provide a tm-output.
+#script contains a section to output topic-modeling results as bar-graph.
+
 #import packages and scripts
 library('ldaOuts')
 library('tm')
@@ -40,7 +43,7 @@ dim(theta)
 exampleIds <- seq(1, 10)
 
 N <- length(exampleIds)
-# get topic proportions form example documents
+# get topic proportions from sample documents
 topicProportionExamples <- theta[exampleIds,]
 colnames(topicProportionExamples) <- topicNames
 vizDataFrame <- melt(cbind(data.frame(topicProportionExamples), document = factor(1:N)), variable.name = "topic", id.vars = "document")  
