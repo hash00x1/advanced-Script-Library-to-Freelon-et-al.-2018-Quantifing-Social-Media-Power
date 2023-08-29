@@ -1,6 +1,6 @@
 #this album takes a corpus of timestamped 'topics' (e.g. newspaper-headlines, or even, Twitter-usernames),
 #and provides an output over which topics are the most dominant for the respective dataset.
-#In combination with script "", this procedure provides an output of which topics were most popular per timestep (e.g. day / week / month). 
+#This procedure provides an output of which topics were most popular per timestep (e.g. day / week / month). Timestamps need to be defined in the source-file and converted to datetime-format, to be compatible with the DocumentTermMatrix- format. 
 #The overall method is based on Freelon et al. (2018), to measure social media power.
 
 topic_modeling <- function(filepath, alpha=NULL){
