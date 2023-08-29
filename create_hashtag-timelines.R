@@ -1,56 +1,56 @@
-#create top hashtag timelines
+#create top hashtag timelines and compares them between two factions (e.g. group 1 & 2)
 #unlist hashtags
 
-##REPS
-reps_hashtags_grouped <- list()
-for (i in reps_tweets$hashtags){
+##group1
+group1_hashtags_grouped <- list()
+for (i in group1_tweets$hashtags){
   x <- (unlist(strsplit(i, ",")))
-  reps_hashtags_grouped <<- append(reps_hashtags_grouped, list(x))
+  group1_hashtags_grouped <<- append(group1_hashtags_grouped, list(x))
 }
-names(reps_hashtags_grouped) <- reps_tweets$ID
+names(group1_hashtags_grouped) <- group1_tweets$ID
 #unlist list but keep indices
-reps_hashtags_grouped <- reps_hashtags_grouped %>% enframe %>%
+group1_hashtags_grouped <- group1_hashtags_grouped %>% enframe %>%
   unnest
-colnames(reps_hashtags_grouped) <- c("ID", "hashtag")
+colnames(group1_hashtags_grouped) <- c("ID", "hashtag")
 
 #create mentions_csv
-reps_hashtags <- dplyr::inner_join(reps_tweets, reps_hashtags_grouped, by = "ID")
+group1_hashtags <- dplyr::inner_join(group1_tweets, group1_hashtags_grouped, by = "ID")
 
 
-##DEMS
-dems_hashtags_grouped <- list()
-for (i in dems_tweets$hashtags){
+##group2
+group2_hashtags_grouped <- list()
+for (i in group2_tweets$hashtags){
   x <- (unlist(strsplit(i, ",")))
-  dems_hashtags_grouped <<- append(dems_hashtags_grouped, list(x))
+  group2_hashtags_grouped <<- append(group2_hashtags_grouped, list(x))
 }
-names(dems_hashtags_grouped) <- dems_tweets$ID
+names(group2_hashtags_grouped) <- group2_tweets$ID
 #unlist list but keep indices
-dems_hashtags_grouped <- dems_hashtags_grouped %>% enframe %>%
+group2_hashtags_grouped <- group2_hashtags_grouped %>% enframe %>%
   unnest
-colnames(dems_hashtags_grouped) <- c("ID", "hashtag")
+colnames(group2_hashtags_grouped) <- c("ID", "hashtag")
 
 #create mentions_csv
-dems_hashtags <- dplyr::inner_join(dems_tweets, dems_hashtags_grouped, by = "ID")
+group2_hashtags <- dplyr::inner_join(group2_tweets, group2_hashtags_grouped, by = "ID")
 
 #######
 #######
 
 ##NEXT STEPS::
 #Filter by day
-#reps
-tm_reps <- reps_hashtags %>% dplyr::mutate(created_at = lubridate::floor_date(created_at, unit = "day")) %>% dplyr::group_by(created_at)
-tm_reps_top <- group_split(tm_reps)
+#group1
+tm_group1 <- group1_hashtags %>% dplyr::mutate(created_at = lubridate::floor_date(created_at, unit = "day")) %>% dplyr::group_by(created_at)
+tm_group1_top <- group_split(tm_group1)
 
-#dems
-tm_dems <- dems_hashtags %>% dplyr::mutate(created_at = lubridate::floor_date(created_at, unit = "day")) %>% dplyr::group_by(created_at)
-tm_dems_top <- group_split(tm_dems)
+#group2
+tm_group2 <- group2_hashtags %>% dplyr::mutate(created_at = lubridate::floor_date(created_at, unit = "day")) %>% dplyr::group_by(created_at)
+tm_group2_top <- group_split(tm_group2)
 
 #filter for hashtags
 #>>list top hashtags per day
 
-#reps
+#group1
 hashtags <- as_tibble()
-for (i in tm_reps_top){
+for (i in tm_group1_top){
   x <- i %>%
       filter(hashtag != "NA")  %>%
           count(gsub(" ", "", tolower(hashtag)), sort = TRUE) #%>%
