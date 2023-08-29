@@ -1,14 +1,6 @@
-#library(rtweet)
-#library(igraph)
-#library(ggraph)
 library(tidyverse)
 library(clean)
 library(RedditExtractoR)
-#library(leiden)
-#library(tm)
-#library('quanteda')
-#library('lubridate')
-#library("slam")
 
 ###Mutate reddit_csv data from csv
 reddit_csv <- read_csv("read.csv", col_names=TRUE)#, col_types= cols(.default = "?", ID = "c" , created_at = "T", user_id ="c"))
