@@ -1,6 +1,6 @@
 #create top hashtag timelines and compares them between two factions (e.g. group 1 & 2)
 
-##group1
+##initialize hashtag-analysis for group1
 group1_hashtags_grouped <- list()
 for (i in group1_tweets$hashtags){
   x <- (unlist(strsplit(i, ",")))
@@ -16,7 +16,7 @@ colnames(group1_hashtags_grouped) <- c("ID", "hashtag")
 group1_hashtags <- dplyr::inner_join(group1_tweets, group1_hashtags_grouped, by = "ID")
 
 
-##group2
+##initialize hashtag-analysis for group2
 group2_hashtags_grouped <- list()
 for (i in group2_tweets$hashtags){
   x <- (unlist(strsplit(i, ",")))
@@ -36,19 +36,18 @@ group2_hashtags <- dplyr::inner_join(group2_tweets, group2_hashtags_grouped, by 
 
 ##NEXT STEPS::
 #Filter by day
-#group1
+##filter for group1
 tm_group1 <- group1_hashtags %>% dplyr::mutate(created_at = lubridate::floor_date(created_at, unit = "day")) %>% dplyr::group_by(created_at)
 tm_group1_top <- group_split(tm_group1)
 
-#group2
+##filter for group2
 tm_group2 <- group2_hashtags %>% dplyr::mutate(created_at = lubridate::floor_date(created_at, unit = "day")) %>% dplyr::group_by(created_at)
 tm_group2_top <- group_split(tm_group2)
 
-#filter for hashtags
 #>>list top hashtags per day
 
-#group1
-hashtags <- as_tibble()
+#sample script to export hashtags as .csv, to facilitate further analysis. To export group1&group2, simply adjust the parameters.
+hashtags <- as_tibble() #initialize hashtags as tibble
 for (i in tm_group1_top){
   x <- i %>%
       filter(hashtag != "NA")  %>%
@@ -61,7 +60,7 @@ for (i in tm_group1_top){
   hashtags <<- rbind(hashtags, date)
   }
 
-
+#export results for post-processing
 write.table(hashtags, file = paste0(filepath, "hashtags","_overview", ".csv"), row.names = FALSE, col.names = TRUE, sep = ",")
 
 
