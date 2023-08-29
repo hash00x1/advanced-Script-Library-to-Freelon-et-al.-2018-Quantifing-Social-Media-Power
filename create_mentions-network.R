@@ -1,4 +1,4 @@
-#create mentions network
+#create tweets-mentions network, based on .csv-formatted Twitter API v01 export.
 
 mg <- mentions_grouped
 names(mg) <- tweets_csv$ID[1:100]
